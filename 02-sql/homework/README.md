@@ -20,7 +20,7 @@ Ahora editá el contenido de ese archivo para que quede como lo siguiente:
 ```
 .header on
 .mode column
-.timer o
+.timer on
 ```
 
 Estos ajustes van a hacer que el output de SQLite sea un poco más amigable.
@@ -45,19 +45,19 @@ Bien, ahora que ya tenemos nuestra base de datos, vamos a empezar a crear tablas
 Abajo están detalladas las tres tablas que necesitamos para nuestro ejemplo.
 
 __Movies__ Table:
-    - id
-      - type INTEGER
-      - primary key
-    - name
-      - type TEXT
-      - default value NULL
-    - year
-      - type INTEGER
-      - default value NULL
-    - rank
-      - type REAL
+  - id
+    - type INTEGER
+    - primary key
+  - name
+    - type TEXT
     - default value NULL
- 
+  - year
+    - type INTEGER
+    - default value NULL
+  - rank
+    - type REAL
+    - default value NULL
+
 > :warning: Las columnas que sean _Primary Key_ van a auto-incrementarse sólo si el tipo de datos definidos es __INTEGER__. Sinónimos tales como __INT__ van a hacer que tengan otro comportamiento.
 
 __Actors__ Table:
