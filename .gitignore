@@ -28,6 +28,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 package-lock.json
+pnpm-lock.yaml
 
 # largue files
 /02-sql/homework/imdb-large.sqlite3.db
