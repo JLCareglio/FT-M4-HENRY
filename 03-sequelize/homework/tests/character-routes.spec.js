@@ -8,13 +8,13 @@ describe('Character Routes', () => {
   })
 
   describe('Parte UNO: POST /character', () => {
-    xit('should return status 404 and corresponding text if any of the mandatory parameters is not send', async () => {
+    it('should return status 404 and corresponding text if any of the mandatory parameters is not send', async () => {
       const res = await request(app).post('/character');
       expect(res.statusCode).toBe(404);
       expect(res.text).toBe('Falta enviar datos obligatorios');
     });
   
-    xit('should return status 201 and character object if the character was succesfully created', async () => {
+    it('should return status 201 and character object if the character was succesfully created', async () => {
       const res = await request(app)
                           .post('/character')
                           .send({code: 'FRAN', name: 'Franco', hp: 100.0, mana: 120.0});
@@ -30,7 +30,7 @@ describe('Character Routes', () => {
       });
     });
   
-    xit('should return status 404 and corresponding text if the database creation fails', async () => {
+    it('should return status 404 and corresponding text if the database creation fails', async () => {
       const res = await request(app)
                           .post('/character')
                           .send({code: 'FRANCO', name: 'Franco', hp: 100.0, mana: 120.0});
@@ -59,13 +59,13 @@ describe('Character Routes', () => {
     })
 
     describe('Parte UNO', () => {
-      xit('should return status 200 and the list of all characters', async () => {
+      it('should return status 200 and the list of all characters', async () => {
         const res = await request(app).get('/character');
         expect(res.statusCode).toBe(200);
         expect(res.body).toEqual([
-          {code: 'ONE', name: 'First', hp: 90.0, mana: 150.0, age: 27, date_added: new Date().toISOString().split('T')[0], race: 'Human'},
-          {code: 'TWO', name: 'Second', hp: 135.0, mana: 40.0, age: 20, date_added: new Date().toISOString().split('T')[0], race: 'Machine'},
-          {code: 'THREE', name: 'Third', hp: 110.0, mana: 110.0, age: 23, date_added: new Date().toISOString().split('T')[0], race: 'Human'}
+          {code: 'ONE', name: 'First', hp: 90.0, mana: 150.0, age:"27 years old", date_added: new Date().toISOString().split('T')[0], race: 'Human'},
+          {code: 'TWO', name: 'Second', hp: 135.0, mana: 40.0, age:"20 years old", date_added: new Date().toISOString().split('T')[0], race: 'Machine'},
+          {code: 'THREE', name: 'Third', hp: 110.0, mana: 110.0, age:"23 years old", date_added: new Date().toISOString().split('T')[0], race: 'Human'}
         ])
       })
   
@@ -79,7 +79,7 @@ describe('Character Routes', () => {
         ])
       })
   
-      xit('should list all characters that match with the race filter', async () => {
+      it('should list all characters that match with the race filter', async () => {
         const res = await request(app).get('/character?race=Human');
         expect(res.statusCode).toBe(200);
         expect(res.body).toEqual([
@@ -88,61 +88,61 @@ describe('Character Routes', () => {
         ])
       })
   
-      xit('should return status 404 and the correct message if character\'s code is invalid', async () => {
+      it('should return status 404 and the correct message if character\'s code is invalid', async () => {
         const res = await request(app).get('/character/FIFTH');
         expect(res.statusCode).toBe(404);
         expect(res.text).toBe('El código FIFTH no corresponde a un personaje existente');
       })
   
-      xit('should return the correct character search by code', async () => {
+      it('should return the correct character search by code', async () => {
         const res = await request(app).get('/character/TWO');
         expect(res.statusCode).toBe(200);
         expect(res.body).toEqual(
-          {code: 'TWO', name: 'Second', hp: 135.0, mana: 40.0, age: 20, date_added: new Date().toISOString().split('T')[0], race: 'Machine'}
+          {code: 'TWO', name: 'Second', hp: 135.0, mana: 40.0, age: "20 years old", date_added: new Date().toISOString().split('T')[0], race: 'Machine'}
         )
       })
     })
 
     describe('Parte DOS', () => {
-      xit('should list all characters that match with the race and the age filters', async () => {
+      it('should list all characters that match with the race and the age filters', async () => {
         await Character.create({code: 'FOUR', name: 'Fourth', hp: 48.0, mana: 65.0, age: 27});
         const res = await request(app).get('/character?race=Human&age=27');
         expect(res.statusCode).toBe(200);
         expect(res.body).toEqual([
-          expect.objectContaining({code: 'ONE', name: 'First', hp: 90.0, race: 'Human', age: 27})
+          expect.objectContaining({code: 'ONE', name: 'First', hp: 90.0, race: 'Human', age: "27 years old"})
         ])
       })
   
-      xit('should list all characters with less than 25 years', async () => {
+      it('should list all characters with less than 25 years', async () => {
         const res = await request(app).get('/character/young');
         expect(res.statusCode).toBe(200);
         expect(res.body).toEqual([
-          expect.objectContaining({code: 'TWO', name: 'Second', hp: 135.0, race: 'Machine', age: 20}),
-          expect.objectContaining({code: 'THREE', name: 'Third', hp: 110.0, race: 'Human', age: 23}),
+          expect.objectContaining({code: 'TWO', name: 'Second', hp: 135.0, race: 'Machine', age: "20 years old"}),
+          expect.objectContaining({code: 'THREE', name: 'Third', hp: 110.0, race: 'Human', age: "23 years old"}),
         ])
       })
   
-      xit('should update attribute wich are null with value passed by query', async () => {
+      it('should update attribute wich are null with value passed by query', async () => {
         const five = Character.create({code: 'FIVE', name: 'Fifth', hp: 15.0, mana: 500.0});
         const six = Character.create({code: 'SIX', name: 'Sixth', hp: 305.0, mana: 23.0, age: 35});
         const seven = Character.create({code: 'SEVEN', name: 'Seventh', hp: 305.0, mana: 23.0});
         await Promise.all([five, six, seven]);
         const res = await request(app).put('/character/age?value=40');
         const characters = await Character.findAll();
-        const with40years = characters.filter(c => c.age === 40);
+        const with40years = characters.filter(c => c.age === '40 years old');
         expect(with40years).toEqual([
-          expect.objectContaining({code: 'FIVE', age: 40}),
-          expect.objectContaining({code: 'SEVEN', age: 40})
+          expect.objectContaining({code: 'FIVE', age: '40 years old'}),
+          expect.objectContaining({code: 'SEVEN', age: '40 years old'})
         ])
         expect(res.text).toBe('Personajes actualizados');
       })
   
-      xit('should return the year joined with the phrase \'years old\'', async () => {
+      it('should return the year joined with the phrase \'years old\'', async () => {
         const characterOne = await Character.findByPk('ONE');
         expect(characterOne.age).toBe('27 years old');
       })
   
-      xit('should add the abilities to the character', async () => {
+      it('should add the abilities to the character', async () => {
         await request(app)
                 .put('/character/addAbilities')
                 .send({
@@ -161,7 +161,7 @@ describe('Character Routes', () => {
         ]))
       })
   
-      xit('should return all the characters with their roles associated', async () => {
+      it('should return all the characters with their roles associated', async () => {
         const res = await request(app).get('/character/roles/ONE');
         expect(res.body.name).toBe('First');
         expect(res.body.Roles).toEqual([

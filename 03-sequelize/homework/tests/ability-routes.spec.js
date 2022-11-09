@@ -9,13 +9,13 @@ describe('Ability Routes', () => {
 
   describe('Parte DOS', () => {
     describe('POST /ability', () => {
-      xit('should return status 404 and corresponding text if any of the mandatory parameters is not send', async () => {
+      it('should return status 404 and corresponding text if any of the mandatory parameters is not send', async () => {
         const res = await request(app).post('/ability');
         expect(res.statusCode).toBe(404);
         expect(res.text).toBe('Falta enviar datos obligatorios');
       });
   
-      xit('should return status 201 and ability object if the ability was succesfully created', async () => {
+      it('should return status 201 and ability object if the ability was succesfully created', async () => {
         const res = await request(app)
                             .post('/ability')
                             .send({name: 'Fire Ball', mana_cost: 80.5});
@@ -39,7 +39,7 @@ describe('Ability Routes', () => {
         await Promise.all([p1Character, p2Character, p3Character, p1Ability, p2Ability, p3Ability]);
       })
   
-      xit('should associate ability with character', async () => {
+      it('should associate ability with character', async () => {
         const res = await request(app)
                             .put('/ability/setCharacter')
                             .send({idAbility: 1, codeCharacter: 'ONE'});
