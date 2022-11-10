@@ -69,7 +69,7 @@ describe('Character Routes', () => {
         ])
       })
   
-      xit('EXTRA: should return status 200 and the list of all characters with certain attributes', async () => {
+      it('EXTRA: should return status 200 and the list of all characters with certain attributes', async () => {
         const res = await request(app).get('/character?name=true&hp=true');
         expect(res.statusCode).toBe(200);
         expect(res.body).toEqual([
