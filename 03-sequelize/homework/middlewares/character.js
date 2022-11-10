@@ -27,20 +27,24 @@ router.get("/", async (req, res) => {
   const { code, name, age, race, hp, mana, date_added } = req.query;
 
   const where = {};
+  const attributes = [];
   const condition = {};
 
-  if (code) where.code = code;
-  if (name) where.name = name;
-  if (age) where.age = age;
-  if (race) where.race = race;
-  if (hp) where.hp = hp;
-  if (mana) where.mana = mana;
-  if (date_added) where.date_added = date_added;
-  condition.where = where;
+  if (code) code === "true" ? attributes.push("code") : (where.code = code);
+  if (name) name === "true" ? attributes.push("name") : (where.name = name);
+  if (age) age === "true" ? attributes.push("age") : (where.age = age);
+  if (race) race === "true" ? attributes.push("race") : (where.race = race);
+  if (hp) hp === "true" ? attributes.push("hp") : (where.hp = hp);
+  if (mana) mana === "true" ? attributes.push("mana") : (where.mana = mana);
+  if (date_added)
+    date_added === "true"
+      ? attributes.push("date_added")
+      : (where.date_added = date_added);
 
-  const allCharacters = !!Object.keys(where).length
-    ? await Character.findAll(condition)
-    : await Character.findAll();
+  condition.where = where;
+  if (attributes.length) condition.attributes = attributes;
+
+  const allCharacters = await Character.findAll(condition);
   return res.json(allCharacters);
 
   // const allCharacters = !race
